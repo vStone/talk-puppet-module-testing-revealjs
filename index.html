@@ -4,19 +4,21 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>Puppet Module Testing</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+		<meta name="description" content="A presentation on testing your puppet modules.">
+		<meta name="author" content="Jan Vansteenkiste">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <link rel="stylesheet" href="css/custom.css">
 
 		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
@@ -31,345 +33,683 @@
 	<body>
 
 		<div class="reveal">
-
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>HTML Presentations Made Easy</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
+        <section>
+          <h2>Puppet Module Testing</h2>
+          <h3>Why?</h3>
+          <h3>How?</h3>
+        </section>
 
-				<section>
-					<h2>Heads Up</h2>
-					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
-					</p>
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
+        <section>
+          <h3>Who am I</h3>
+          <h2>Jan Vansteenkiste</h2>
+          <!--<div style="float: left;">
+          </div>-->
+          <div data-markdown>
+          <script type="text/template">
+            * `jan@vstone.eu`
+            * Have a blog:          ...  [http://vstone.eu](http://vstone.eu),
+            * Github too:           ...  [http://github.com/vStone/](https://github.com/vStone/),
+            * And twitter too, yes: ...  [Jan_vStone](https://twitter.com/Jan_vStone)
+            * IRC                   ...  [irc://irc.freenode.org](irc://irc.freenode.org) nick: vStone
+            * Work:
+              * Sysadmin/(Developer)
+              * (For) Inuits [http://inuits.eu](http://inuits.eu)
+              * (At) UnifiedPost
+          </script>
+        </section>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
 
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview. Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
+        <section>
+          <h1>A story<br/>of Puppet</h1>
+          <h3>(testing)</h3>
+        </section>
 
-				<section>
-					<h2>rvl.io</h2>
-					<p>
-						If you don't like writing slides in HTML you can use the online editor <a href="http://www.rvl.io" target="_blank">rvl.io</a>.
-					</p>
-				</section>
 
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
+        <section>
+          <h2>In the beginning</h2>
+          <ul>
+            <li>Simple modules:<br/>Install/Config/Service</li>
+            <li>Testing?
+              <ul class=fragment>
+                <li>What is it?</li>
+                <li>Why?</li>
+              </ul>
+            </li>
+            <li class="fragment alert">Hacking on production</li>
+          </ul>
+        </section>
 
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+        <section>
+          <h2>Start Growing</h2>
+          <h3 class=fragment>(adding complexity)</h3>
+          <ul class=fragment>
+            <li>Configuration has parameters</li>
+            <li>Dealing with different distros</li>
+            <li class="fragment fade-in">
+              <span class="alert">Hacking on production</span>
+              <span id="xxx" class="fragment replace"><br/>Vagrant</span>
+            </li>
+          </ul>
+        </section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
+        <section>
+          <aside class="notes">GO DOWN</aside>
+        <section data-state="vagrant">
+          <h2>Vagrant</h2>
+          <a style="color: black;" href="http://www.vagrantup.com/">http://www.vagrantup.com/</a>
+          <br/>
+          <ul class="fragment">
+            <li>Local testing</li>
+            <li>Exact environment</li>
+            <li>Vagrant up, down, up, down, up, provision, down</li>
+            <li>Host interactions (puppetmaster -client)</li>
+          </ul>
+        </section>
 
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
 
-							<section data-markdown>
-							  ## Markdown support
+        <section>
+          <h3>Vagrantfile</h3>
+          <pre><code contenteditable class="ruby">Vagrant::Config.run do |config|
+  config.vm.define :puppetmaster do |vm_config|
+    vm_config.vm.box = 'puppet3'
+    vm_config.vm.host_name = "puppetmaster01.virtual.vstone.be"
+    vm_config.vm.network :hostonly, '192.168.13.2'
+    vm_config.vm.provision :shell do |shell|
+      shell.path = "scripts/run_puppetmaster.sh"
+    end
+  end
+end
+</code></pre>
+          <h4>Links</h4>
+          <ul>
+            <li><a href="http://docs.vagrantup.com/v1/docs/getting-started/index.html">Getting started</a></li>
+            <li><a href="http://vstone.eu/my-improved-vagrantfile/">My Improved Vagrantfile</a></li>
+          </ul>
+          </section>
 
-							  For those of you who like that sort of thing.
-							  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-							</section>
-					</script>
-				</section>
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=cube#/transitions">Cube</a> -
-						<a href="?transition=page#/transitions">Page</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a> -
-						<a href="?transition=linear#/transitions">Linear</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?#/transitions">Default</a>
-					</p>
-				</section>
+          <section>
+            <h3>Poor mans testing</h3>
+            <h4>Hey, at least it's not on production</h4>
+            <ul>
+              <li class="fragment">Still no real puppet module tests.</li>
+              <li class="fragment">Losing time:
+                <ul>
+                  <li>VM booting (SSD helps...)</li>
+                  <li>Puppet stack</li>
+                </ul>
+              </li>
+            </ul>
+            <div class="fragment" style="font-size: 12pt; vertical-align: top; line-height: 1.2">
+              <img src="./img/xkcd-compiling.png" /><br/>
+              (Original <a href="http://xkcd.com">xkcd.com</a>  - CC BY-NC 2.5) <a href="http://pic.twitter.com/CVX3gjxN">pic.twitter.com/CVX3gjxN</a>
+            </div>
+          </section>
+        </section>
 
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						Reveal.js comes with a few themes built in: <br>
-						<a href="?theme=sky#/themes">Sky</a> -
-						<a href="?theme=beige#/themes">Beige</a> -
-						<a href="?theme=simple#/themes">Simple</a> -
-						<a href="?theme=serif#/themes">Serif</a> -
-						<a href="?theme=night#/themes">Night</a> -
-						<a href="?#/themes">Default</a>
-					</p>
-					<p>
-						<small>
-							* Theme demos are loaded after the presentation which leads to flicker. In production you should load your theme in the <code>&lt;head&gt;</code> using a <code>&lt;link&gt;</code>.
-						</small>
-					</p>
-				</section>
 
-				<section>
-					<section data-state="alert">
-						<h2>Global State</h2>
-						<p>
-							Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-							will be added as a class to the document element when the slide is open. This lets you
-							apply broader style changes, like switching the background.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-state="blackout">
-						<h2>"blackout"</h2>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-state="soothe">
-						<h2>"soothe"</h2>
-						<a href="#" class="image navigate-next">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(-90deg);">
-						</a>
-					</section>
-				</section>
+          <section>
+            <h2>Testing for<br/>silly mistakes</h2>
+            <ul style="width: 100%">
+              <li class="fragment">Syntax<span class="fragment">: Catch errors early</br>Before a vagrant run</span>
+                <pre class="fragment"><code>puppet parser validate &lt;filename&gt;</code></pre>
+              </li>
+              <li class="fragment">Style<span class="fragment">: Catch common mistakes</span>
+                <ul class="fragment">
+                  <li>Unexpected behavior
+                    <ul>
+                      <li>Quoted booleans</li>
+                      <li>'$strings' in commands</li>
+                    </ul>
+                  </li>
+                  <li>Pretty code debugs easier: especially somebody else his code.</li>
+                </ul>
+                <pre class="fragment"><code>puppet-lint &lt;filename&gt;</code></pre>
+              </li>
+            </ul>
+          </section>
 
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+          <section>
+              <h2>Automating</h2>
+              <h3>We tend to forget...</h3>
+              <ul style="width: 100%">
+                <li>GIT Hooks: Validate syntax, trailing spaces, tabs, ...</li>
+                <li>CI Tools: Jenkins/Travis/...</li>
+              </ul>
+          </section>
 
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						The nice thing about standards is that there are so many to choose from</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
-					</blockquote>
-				</section>
+          <section>
+            <section data-state="jenkins">
+            <aside class="notes">GO DOWN</aside>
+            <h1>Hello<br/>Jenkins</h1>
+            <ul>
+              <li>Automate your testing
+                <ul>
+                  <li>Complete tree</li>
+                  <li>Single module</li>
+               </ul>
+              </li>
+              <li>Using scripts</li>
+              <li>Use rake</li>
+              <li>Jenkins <a href="https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin">Warnings Plugin</a></li>
+              <li>Some helper scripts: <a href="https://github.com/vStone/jenkins-puppet-scripts">Jenkins Puppet Scripts</a></li>
+            </ul>
+            </section>
 
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+            <section data-state="jenkins">
+              <img src="img/jenkins/01.png"/>
+            </section>
 
-    var nodes = document.querySelectorAll( selector );
+            <section data-state="jenkins">
+              <img src="img/jenkins/02.png"/>
+              <a href="https://github.com/vStone/jenkins-puppet-scripts/blob/master/check_puppet_syntax/JENKINS.md">Warnings Plugin Groovy</a>
+            </section>
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+            <section data-state="jenkins">
+              <img src="img/jenkins/03.png"/>
+            </section>
 
-      if( !node.className ) ) {
-        node.className += ' roll';
+            <section data-state="jenkins">
+              <img src="img/jenkins/04.png"/>
+            </section>
+
+          </section>
+
+
+          <section>
+            <h2>So far, so good...</h2>
+            <h3 class="fragment">But...</h3>
+            <h4 class="fail fragment">Still not testing the<br/>functionality of our modules</h4>
+          </section>
+
+          <section>
+            <h1>Complexity+</h1>
+            <div class="fragment">
+              <h2>Functions and facts</h2>
+              <ul>
+                <li>Copy/paste FTW!</li>
+                <li>Getting to know ruby</li>
+                <li>Tired of vagrant up, provision, down<span class="fragment">, up, provision, provision, provision, down</span><span class="fragment"> ...</span></li>
+                <li class="fragment">The need for spec tests rises</li>
+                <li class="fragment">How hard can it be?</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+
+            <section>
+              <h1>The toolkit</h1>
+              <ul>
+                <li>Ruby + Rubygems &lt;/captain-obvious&gt;</li>
+                <li>Bundler: Dependency Management</li>
+                <li>Gemfile: Describes dependencies</li>
+                <li>Rakefile: Running rake tasks</li>
+                <li>Tests!</li>
+              </ul>
+              </section>
+
+            <section>
+              <h3>Gemfile</h3>
+              <pre><code>source :rubygems
+
+gem 'rake'
+gem 'puppet-lint'
+gem 'rspec'
+gem 'rspec-puppet'
+
+## Will come in handy later on. But you could just use
+# gem 'puppet'
+puppetversion = ENV.key?('PUPPET_VERSION') ? "~&gt; #{ENV['PUPPET_VERSION']}" : ['&gt;= 2.7']
+gem 'puppet', puppetversion
+gem 'puppetlabs_spec_helper'
+              </code></pre>
+            </section>
+
+            <section>
+              <h3>Bundler</h3>
+              <pre><code>
+# Install rubygems first
+gem install bundler
+
+# Install all required gems in .vendor/
+bundle install --path .vendor
+# Ignore this folder in .gitignore or globally.
+
+# We can already use puppet-lint.
+bundle exec puppet-lint
+              </code></pre>
+            </section>
+
+            <section>
+              <h3>Rakefile</h3>
+              <ul>
+                <li>Copy paste</li>
+                <li>Use rpsec-puppet</li>
+             </ul>
+             <pre class="fragment"><code>$ bundle exec rspec-puppet-init
+ + spec/
+ + spec/classes/
+ + spec/defines/
+ + spec/functions/
+ + spec/hosts/
+ + spec/fixtures/
+ + spec/fixtures/manifests/
+ + spec/fixtures/modules/
+ + spec/fixtures/modules/example/
+ + spec/fixtures/manifests/site.pp
+ + spec/fixtures/modules/example/manifests
+ + spec/fixtures/modules/example/lib
+ + spec/fixtures/modules/example/templates
+ + spec/spec_helper.rb
+ + Rakefile
+              </code></pre>
+            </section>
+
+            <section>
+              <h3>Rakefile (rspec-puppet)</h3>
+              <pre><code>require 'rake'
+require 'rspec/core/rake_task'
+
+# By default this is :spec
+RSpec::Core::RakeTask.new(:rspec) do |t|
+  t.pattern = 'spec/*/*_spec.rb'
+end
+              </code></pre>
+              <h4>Running rake</h4>
+              <pre><code>$ bundle exec rake -T
+rake spec  # Run RSpec code examples
+              </code></pre>
+            </section>
+
+            <section>
+              <h3>Rakefile<br/> (puppetlabs_spec_helper)</h3>
+              <pre><code>require 'rake'
+require 'rspec/core/rake_task'
+require 'puppetlabs_spec_helper/rake_tasks'
+              </code></pre>
+              <h4>Running rake</h4>
+              <pre><code>$ bundle exec rake -T
+rake build            # Build puppet module package
+rake clean            # Clean a built module package
+rake coverage         # Generate code coverage information
+rake help             # Display the list of available rake tasks
+rake lint             # Check puppet manifests with puppet-lint
+rake rspec            # Run RSpec code examples
+rake spec             # Run spec tests in a clean fixtures directory / Run RSpec code examples
+rake spec_clean       # Clean up the fixtures directory
+rake spec_prep        # Create the fixtures directory
+rake spec_standalone  # Run spec tests on an existing fixtures directory
+              </code></pre>
+              <aside class="notes">Notice how puppet-lint has been added by the puppetlabs_spec_helper.</aside>
+            </section>
+
+          </section>
+
+
+          <section>
+            <h2>Something to test</h2>
+          </section>
+
+
+          <section>
+          <section>
+            <aside class="notes">GO DOWN</aside>
+            <h2>Testing a function</h2>
+            <div class="fragment">./lib/puppet/parser/functions/mysql_password.rb
+              <div class="resize">
+              <pre><code contenteditable>require 'digest/sha1'
+
+module Puppet::Parser::Functions
+  newfunction(:mysql_password, :type => :rvalue) do |args|
+    raise(Puppet::ParseError, 'mysql_password(): Argument must be a string') unless args[0].is_a?(String)
+    '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(args[0])).upcase
+  end
+end
+              </code></pre>
+            </div></div>
+            </section>
+            <section>
+              <div>./spec/functions/mysql_password_spec.rb
+                <pre><code style="max-height:600px" contenteditable>require 'spec_helper'
+
+describe 'mysql_password' do
+  let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
+
+  it 'should exist' do
+    Puppet::Parser::Functions.function('mysql_password').should == 'function_mysql_password'
+  end
+
+  it 'should throw an error on invalid types' do
+    lambda {
+      scope.function_mysql_password([{:foo => :bar}])
+    }.should(raise_error(Puppet::ParseError))
+  end
+
+  it 'should convert a password to a hash' do
+    password = 'mypass'
+    scope.function_mysql_password([password]).should == '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
+  end
+end
+                </pre></code>
+              </div>
+              </section>
+              <section>
+                <div>Running the test:
+                  <pre><code>$ bundle exec rake rspec
+/usr/bin/ruby18 -S rspec spec/functions/mysql_password_spec.rb
+...
+
+Finished in 0.00693 seconds
+3 examples, 0 failures
+                  </code></pre>
+              </section>
+              <section>
+              <div>Rakefile
+                <pre><code>RSpec::Core::RakeTask.new(:rspec) do |t|
+  t.pattern = 'spec/*/*_spec.rb'
+  t.rspec_opts = File.read("spec/spec.opts").chomp || ""
+end
+                </code></pre>
+              </div>
+              <div>spec/spec.opts
+                <pre><code>--format documentation --colour --backtrace</code></pre>
+              </div>
+              </section>
+              <section>
+              <div>Running the tests:
+                <pre><code>/usr/bin/ruby18 -S rspec spec/functions/mysql_password_spec.rb --format documentation --colour --backtrace
+
+mysql_password
+  should exist
+  should throw an error on invalid types
+  should convert a password to a hash
+
+Finished in 0.00715 seconds
+3 examples, 0 failures
+                </code></pre>
+              </div>
+              </section>
+              </section>
+
+
+          <section>
+            <section>
+              <h2>Testing a fact</h2>
+              <a href="https://github.com/vStone/puppet-testing-example.git">https://github.com/vStone/puppet-testing-example.git</a>
+            </section>
+            <section>
+              <div>./lib/facter/is_database.rb
+                <pre><code>Facter.add(:is_example) do
+  setcode do
+    if (Facter.value('fqdn') =~ /^(.*\.)?example\.com$/) == nil
+      is_example = false
+    else
+      is_example = true
+    end
+    is_example
+  end
+end
+</code></pre>
+            </section>
+            <section>
+              <div>./spec/facts/is_example_spec.rb
+                <pre><code style="max-height: 600px">require 'spec_helper'
+require 'facter/is_example'
+
+describe 'Facter::Util::Fact' do
+  before { Facter.clear }
+  after  { Facter.clear }
+
+  describe 'is_example for host' do
+
+    it 'noexample.com' do
+      Facter.fact(:fqdn).stubs(:value).returns('noexample.com')
+      Facter.fact(:is_example).value.should == false
+    end
+
+    it 'some.example.com' do
+      Facter.fact(:fqdn).stubs(:value).returns('some.example.com')
+      Facter.fact(:is_example).value.should == true
+    end
+  end
+end</code></pre>
+
+            </section>
+          </section>
+
+
+          <section>
+          <h2>So....</h2><h3>What else can we test?</h3><br/>
+            <ul><li>Classes, Functions,... (<a href="http://rspec-puppet.com">http://rspec-puppet.com</a>)</li>
+              <li>Hiera (<a href="https://github.com/amfranz/rspec-hiera-puppet">rspec-hiera-puppet</a>)</li>
+              <li>Augeas (<a href="https://github.com/domcleal/rspec-puppet-augeas">rspec-puppet-augeas</a>)<br/>Soon? Dominic!?</li>
+            </ul>
+          </section>
+          <section>
+            <section>
+              <h3>Some common examples</h3>
+              <ul>
+                <li>Distro support: Setting custom facts.</li>
+                <li>Parameters: Testing the effect should they have.</li>
+              </ul>
+            </section>
+            <section><h4>Example: distro support</h4>
+              <pre><code>require 'spec_helper'
+
+describe 'example' do
+  describe 'on CentOS' do
+    let (:facts) { { 
+      :operatingsystem => 'CentOS',
+       :osfamily => 'RedHat',
+    } }
+
+    it { should include_class('example::redhat') }
+    it { should contain_file('foo').with_path('/etc/sysconfig/example') }
+  end
+end
+              </code></pre>
+            </section>
+            <section><h4>Example: Parameters</h4>
+              <pre><code>require 'spec_helper'
+
+describe 'example' do
+  context 'with foo => false' do
+    let (:params) { {
+      :foo => false
+    } }
+
+    it { should_not contain_file('foo') }
+  end
+end
+              </code></pre>
+            </section>
+          </section>
+          <section>
+            <h2>Conclusion?</h2>
+            <ul>
+              <li class="fragment">It's not that hard</li>
+              <li class="fragment">It's faster than vagrant or puppet apply runs</li>
+              <li class="fragment">Limited scope.<br/>A test is a lot easier than randomly placing notifies in your manifests</li>
+              <li class="fragment">Less resources used. No need to bring up VM's for testing</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Freebies</h2>
+            <ul>
+              <li>New features without worries:<br/><span class="fragment">Backwards compatible: check!</span></li>
+              <li>Help others help you<br/><span class="fragment">Document what you expect.</span></li>
+              <li>Automated tests are useful now
+                <ul class="fragment">
+                  <li>Proper testing of modules and functionality</li>
+                  <li>(Automated) Feedback on pull requests</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <section>
+            <h2>Using Travis-CI</h2>
+            <ul>
+              <li><a href="https://travis-ci.org/">https://travis-ci.org</a></li>
+              <li>Test multiple ruby versions</li>
+              <li>Test multiple puppet versions</li>
+              <li>Simple:
+                <ul>
+                  <li>puppetlabs_spec_helper</li>
+                  <li>.fixtures.yml</li>
+                  <li>.travis.yml</li>
+                </ul>
+              </li>
+              <li>Bonus feature: integrates nicely with github</li>
+            </ul>
+            </section>
+
+            <section>
+              <img src="img/travis.png" />
+            </section>
+
+            <section>
+              <h3>What do we need</h3>
+              <h4>.fixtures.yml</h4>
+              <ul>
+                <li>No need to mess with submodules</li>
+                <li>Clean fixtures every time</li>
+              </ul>
+              <pre><code>fixtures:
+  repositories:
+    stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib"
+  symlinks:
+    example: "#{source_dir}"
+              </code></pre>
+            </section>
+            <section>
+              <h4>.travis.yml</h4>
+              <ul>
+                <li>File must exist on the master branch</li>
+              </ul>
+              <pre><code>language: ruby
+rvm:
+  - 1.8.7
+  - 1.9.3
+script: 'rake spec'
+env:
+  - PUPPET_VERSION="2.7"
+  - PUPPET_VERSION="3.0"
+branches:
+  only:
+    - master
+    - develop
+              </code></pre>
+            </section>
+            <section>
+              <h4>Sign up using your github account</h4>
+              *clickety click*<br/>
+              <a href="https://travis-ci.org/profile">Your Profile</a>
+              <img src="img/travis-profile.png"/>
+            </section>
+          </section>
+          <section><h1>In the end</h1>
+          <h4 style="float: left;">Not-that-hard</h4>
+          <h2>Faster testing</h2>
+          <h3 style="float: right">Easier for debugging<h3>
+          <h4>Limited Scope</h4>
+          <br/>
+          <h4>...</h4>
+          <br/>
+          <h3>But needs some docs/examples</h3>
+          </section>
+
+          <section>
+            <h1>Questions?</h1>
+            <ul>
+              <li>Jan@vstone.eu</li>
+              <li>Twitter: Jan_vStone</li>
+              <li>IRC: vStone</li>
+              <li><a href="http://vstone.eu">http://vstone.eu</a></li>
+            </ul>
+          </section>
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script src="js/jquery-1.9.0.js"></script>
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        autoSlide: 0,
+        mouseWheel: false,
+
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+            hljs.tabReplace = '  ';
+            hljs.initHighlightingOnLoad();
+          }
+        },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+    <style type="text/css"><!--
+      pre>code {
+        z-index: 1000 !important;
       }
-    };
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+    --></style>
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
+    <script type="text/javascript"><!--
 
-				<section>
-					<section>
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
+      function hasClass(element, cls) {
+        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+      }
 
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-					</section>
-				</section>
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+          $('pre code').css({position: 'relative'});
+      });
 
-				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
-				</section>
+      Reveal.addEventListener('fragmentshown', function (event) {
+          $('pre code').css({position: 'relative'});
+          fragment = event.fragment;
+          if (hasClass(fragment,'replace')) {
+            fragment.previousElementSibling.style.textDecoration = 'line-through';
+          }
+      } );
 
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					<script>
-						document.getElementById('slideshare').attributeName = 'allowfullscreen';
-					</script>
-				</section>
+      $('pre code').click(function(evt) {
+        if (evt.ctrlKey) {
+        $(this).css({ position: 'absolute', left: '50%'});
+        var w = $(this).outerWidth()
+        var offset = (w / 2);
+        $(this).css({ marginLeft: '-' + offset + 'px' });
+        }
+      });
 
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press b or period on your keyboard to enter the 'paused' mode. This mode is helpful when you want to take distracting slides off the screen
-						during a presentation.
-					</p>
-				</section>
+     --></script>
 
-				<section>
-					<h2>Stellar Links</h2>
-					<ul>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on GitHub</a></li>
-						<li><a href="http://hakim.se/projects/reveal-js">Leave feedback on my site</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>It's free</h2>
-					<p>
-						reveal.js and <a href="http://www.rvl.io">rvl.io</a> are entirely free but if you'd like to support the projects you can donate below.
-						Donations will go towards hosting and domain costs.
-					</p>
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-						<input type="hidden" name="cmd" value="_donations">
-						<input type="hidden" name="business" value="hakim.elhattab@gmail.com">
-						<input type="hidden" name="lc" value="US">
-						<input type="hidden" name="item_name" value="reveal.js / rvl.io">
-						<input type="hidden" name="no_note" value="0">
-						<input type="hidden" name="currency_code" value="USD">
-						<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest">
-						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					</form>
-				</section>
-
-				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
-				</section>
-
-			</div>
-
-		</div>
-
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.min.js"></script>
-
-		<script>
-
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
-
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
-				]
-			});
-
-		</script>
-
-	</body>
+  </body>
 </html>
